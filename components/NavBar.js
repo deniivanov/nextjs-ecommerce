@@ -3,6 +3,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { DataContext } from "../store/GlobalState";
 import Cookie from "js-cookie";
+import { ShoppingCart, AccountCircle } from "@material-ui/icons";
+import { Badge, AppBar, Paper, Typography } from "@material-ui/core";
 
 function NavBar() {
   const router = useRouter();
@@ -81,66 +83,79 @@ function NavBar() {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <Link href="/">
-        <a className="navbar-brand">Auto E-Commerce Site</a>
-      </Link>
-      <button
-        className="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarNavDropdown"
-        aria-controls="navbarNavDropdown"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span className="navbar-toggler-icon"></span>
-      </button>
-      <div
-        className="collapse navbar-collapse justify-content-end"
-        id="navbarNavDropdown"
-      >
-        <ul className="navbar-nav p-1">
-          <li className="nav-item">
-            <Link href="/cart">
-              <a className={"nav-link" + isActive("/cart")}>
-                <i
-                  className="fas fa-shopping-cart position-relative"
-                  aria-hidden="true"
-                >
-                  <span
-                    className="position-absolute"
-                    style={{
-                      padding: "3px 6px",
-                      background: "red",
-                      borderRadius: "50%",
-                      top: "-10px",
-                      right: "-10px",
-                      color: "white",
-                      fontSize: "10px",
-                    }}
-                  >
-                    {cart.length}
-                  </span>
-                </i>{" "}
-                Количка
+    <>
+      <AppBar style={{ boxShadow: "none" }} position="sticky">
+        <Paper
+          position="sticky"
+          style={{
+            backgroundColor: "#0d7b73",
+            color: "#fff",
+            borderRadius: "0px",
+          }}
+        >
+          <Typography variant="body2" align="center">
+            При поръчки над 50лв, безплатна доставка
+          </Typography>
+        </Paper>
+        <Paper
+          style={{
+            height: "4.5rem",
+            minHeight: "4rem",
+            borderRadius: "0px 0px 5px 5px",
+          }}
+        >
+          <nav className="navbar navbar-expand-lg navbar-light">
+            <Link href="/">
+              <a className="navbar-brand">
+                <img
+                  src="../assets/images/logo-2.svg"
+                  width="60%"
+                  height="60%"
+                />
               </a>
             </Link>
-          </li>
-          {Object.keys(auth).length === 0 ? (
-            <li className="nav-item">
-              <Link href="/signin">
-                <a className={"nav-link" + isActive("/signin")}>
-                  <i className="fas fa-user" aria-hidden="true"></i> Вход
-                </a>
-              </Link>
-            </li>
-          ) : (
-            loggedRouter()
-          )}
-        </ul>
-      </div>
-    </nav>
+            <button
+              className="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target="#navbarNavDropdown"
+              aria-controls="navbarNavDropdown"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span className="navbar-toggler-icon"></span>
+            </button>
+            <div
+              className="collapse navbar-collapse justify-content-end"
+              id="navbarNavDropdown"
+            >
+              <ul className="navbar-nav p-1">
+                <li className="nav-item">
+                  <Link href="/cart">
+                    <a className={"nav-link" + isActive("/cart")}>
+                      <Badge badgeContent={cart.length} color="secondary">
+                        <ShoppingCart />
+                      </Badge>
+                    </a>
+                  </Link>
+                </li>
+                {Object.keys(auth).length === 0 ? (
+                  <li className="nav-item">
+                    <Link href="/signin">
+                      <a className={"nav-link" + isActive("/signin")}>
+                        <AccountCircle />
+                      </a>
+                    </Link>
+                  </li>
+                ) : (
+                  loggedRouter()
+                )}
+              </ul>
+            </div>
+          </nav>
+        </Paper>
+      </AppBar>
+    </>
   );
 }
 

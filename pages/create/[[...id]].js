@@ -4,18 +4,41 @@ import { DataContext } from "../../store/GlobalState";
 import { imageUpload } from "../../utils/imageUpload";
 import { postData, getData, putData } from "../../utils/fetchData";
 import { useRouter } from "next/router";
+import {
+  Button,
+  TextField,
+  Grid,
+  Typography,
+  Select,
+  MenuItem,
+} from "@material-ui/core";
 
 const ProductsManager = () => {
   const initialState = {
     title: "",
-    price: 0,
-    inStock: 0,
+    price: "",
+    originalPrice: "",
+    inStock: "",
     description: "",
     content: "",
+    whenToUse: "",
+    howItWorks: "",
+    howToUse: "",
     category: "",
   };
   const [product, setProduct] = useState(initialState);
-  const { title, price, inStock, description, content, category } = product;
+  const {
+    title,
+    price,
+    originalPrice,
+    inStock,
+    description,
+    content,
+    whenToUse,
+    howToUse,
+    howItWorks,
+    category,
+  } = product;
 
   const [images, setImages] = useState([]);
 
@@ -102,8 +125,7 @@ const ProductsManager = () => {
       !inStock ||
       !description ||
       !content ||
-      category === "all" ||
-      images.length === 0
+      category === "all"
     )
       return dispatch({
         type: "NOTIFY",
@@ -144,118 +166,175 @@ const ProductsManager = () => {
       <Head>
         <title>Добави нов продукт</title>
       </Head>
-      <form className="row" onSubmit={handleSubmit}>
-        <div className="col-md-6">
-          <input
-            type="text"
-            name="title"
-            value={title}
-            placeholder="Име на продукта"
-            className="d-block my-4 w-100 p-2"
-            onChange={handleChangeInput}
-          />
-
-          <div className="row">
-            <div className="col-sm-6">
-              <label htmlFor="price">Price</label>
-              <input
-                type="number"
-                name="price"
-                value={price}
-                placeholder="Price"
-                className="d-block w-100 p-2"
-                onChange={handleChangeInput}
-              />
-            </div>
-
-            <div className="col-sm-6">
-              <label htmlFor="price">In Stock</label>
-              <input
-                type="number"
-                name="inStock"
-                value={inStock}
-                placeholder="inStock"
-                className="d-block w-100 p-2"
-                onChange={handleChangeInput}
-              />
-            </div>
-          </div>
-
-          <textarea
-            name="description"
-            id="description"
-            cols="30"
-            rows="4"
-            placeholder="Description"
-            onChange={handleChangeInput}
-            className="d-block my-4 w-100 p-2"
-            value={description}
-          />
-
-          <textarea
-            name="content"
-            id="content"
-            cols="30"
-            rows="6"
-            placeholder="Content"
-            onChange={handleChangeInput}
-            className="d-block my-4 w-100 p-2"
-            value={content}
-          />
-
-          <div className="input-group-prepend px-0 my-2">
-            <select
-              name="category"
-              id="category"
-              value={category}
-              onChange={handleChangeInput}
-              className="custom-select text-capitalize"
-            >
-              <option value="all">All Products</option>
-              {categories.map((item) => (
-                <option key={item._id} value={item._id}>
-                  {item.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <button type="submit" className="btn btn-info my-2 px-4">
-            {onEdit ? "Update" : "Create"}
-          </button>
-        </div>
-
-        <div className="col-md-6 my-4">
-          <div className="input-group mb-3">
-            <div className="input-group-prepend">
-              <span className="input-group-text">Upload</span>
-            </div>
-            <div className="custom-file border rounded">
-              <input
-                type="file"
-                className="custom-file-input"
-                onChange={handleUploadInput}
-                multiple
-                accept="image/*"
-              />
-            </div>
-          </div>
-
-          <div className="row img-up mx-0">
-            {images.map((img, index) => (
-              <div key={index} className="file_img my-1">
-                <img
-                  src={img.url ? img.url : URL.createObjectURL(img)}
-                  alt=""
-                  className="img-thumbnail rounded"
+      <div>
+        <Typography style={{ padding: "10px" }} align="center" variant="h4">
+          Добави продукт
+        </Typography>
+        <Grid direction="row" justify="center" alignItems="center">
+          <Typography variant="h6">Описание на продукта</Typography>
+          <form onSubmit={handleSubmit}>
+            <Grid item xs={12} md={6}>
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                <TextField
+                  label="Име на продукт"
+                  name="title"
+                  variant="outlined"
+                  value={title}
+                  placeholder="Име на продукт"
+                  onChange={handleChangeInput}
+                />
+                <TextField
+                  label="Цена"
+                  type="number"
+                  name="price"
+                  variant="outlined"
+                  value={price}
+                  placeholder="Цена"
+                  onChange={handleChangeInput}
+                />
+                <TextField
+                  label="Оригинална Цена"
+                  type="number"
+                  id="originalPrice"
+                  name="originalPrice"
+                  variant="outlined"
+                  value={originalPrice}
+                  placeholder="Цена"
+                  onChange={handleChangeInput}
+                />
+                <TextField
+                  label="Наличност"
+                  type="number"
+                  name="inStock"
+                  variant="outlined"
+                  value={inStock}
+                  placeholder="Наличност"
+                  onChange={handleChangeInput}
+                />
+                <TextField
+                  label="Описание"
+                  name="description"
+                  variant="outlined"
+                  type="textarea"
+                  id="description"
+                  multiline
+                  rows={3}
+                  rowsMax={4}
+                  placeholder="Description"
+                  onChange={handleChangeInput}
+                  value={description}
                 />
 
-                <span onClick={() => deleteImage(index)}>X</span>
+                <TextField
+                  label="Описание 2"
+                  type="textarea"
+                  name="content"
+                  variant="outlined"
+                  id="content"
+                  multiline
+                  rows={3}
+                  rowsMax={4}
+                  placeholder="Описание 2"
+                  onChange={handleChangeInput}
+                  value={content}
+                />
+                <TextField
+                  label="Кога се ползва"
+                  type="textarea"
+                  name="whenToUse"
+                  variant="outlined"
+                  id="whenToUse"
+                  multiline
+                  rows={3}
+                  rowsMax={4}
+                  placeholder="Кога да ползваме"
+                  onChange={handleChangeInput}
+                  value={whenToUse}
+                />
+                <TextField
+                  label="Как се ползва"
+                  type="textarea"
+                  name="howToUse"
+                  variant="outlined"
+                  id="howToUse"
+                  multiline
+                  rows={3}
+                  rowsMax={4}
+                  placeholder="Как се ползва"
+                  onChange={handleChangeInput}
+                  value={howToUse}
+                />
+                <TextField
+                  label="Как работи"
+                  type="textarea"
+                  name="howItWorks"
+                  variant="outlined"
+                  id="howItWorks"
+                  multiline
+                  rows={3}
+                  rowsMax={4}
+                  placeholder="Как работи"
+                  onChange={handleChangeInput}
+                  value={howItWorks}
+                />
+                <div className="input-group-prepend px-0 my-2">
+                  <Select
+                    name="category"
+                    id="category"
+                    value={category}
+                    fullWidth={true}
+                    variant="outlined"
+                    onChange={handleChangeInput}
+                  >
+                    <MenuItem value="all">Всички продукти</MenuItem>
+                    {categories.map((item) => (
+                      <MenuItem key={item._id} value={item._id}>
+                        {item.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </div>
+
+                <Button type="submit" variant="contained" color="secondary">
+                  {onEdit ? "Обнови" : "Добави"}
+                </Button>
               </div>
-            ))}
-          </div>
-        </div>
-      </form>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Typography variant="h6">Снимки на продукта</Typography>
+              <div className="col-md-6 my-4">
+                <div className="input-group mb-3">
+                  <div className="input-group-prepend">
+                    <span className="input-group-text">Upload</span>
+                  </div>
+                  <div className="custom-file border rounded">
+                    <input
+                      type="file"
+                      className="custom-file-input"
+                      onChange={handleUploadInput}
+                      multiple
+                      accept="image/*"
+                    />
+                  </div>
+                </div>
+
+                <div className="row img-up mx-0">
+                  {images.map((img, index) => (
+                    <div key={index} className="file_img my-1">
+                      <img
+                        src={img.url ? img.url : URL.createObjectURL(img)}
+                        alt=""
+                        className="img-thumbnail rounded"
+                      />
+                      <span onClick={() => deleteImage(index)}>X</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </Grid>
+          </form>
+        </Grid>
+      </div>
     </div>
   );
 };
