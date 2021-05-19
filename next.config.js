@@ -1,6 +1,6 @@
 module.exports = {
   env: {
-    BASE_URL: "http://vitalize.bg",
+    BASE_URL: "https://vitalize.bg",
     MONGODB_URL: process.env.MONGODB,
     ACCESS_TOKEN_SECRET: "SGe36lEOIxWAHE5VLZKRJWlKb40",
     REFRESH_TOKEN_SECRET: "YOUR_REFRESH_TOKEN_SECRET",
