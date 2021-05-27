@@ -113,7 +113,7 @@ const DetailProduct = (props) => {
 
   return (
     <>
-      <div className="row detail_page">
+      <div>
         <Head>
           <title>{product.title} | Vitalize.bg</title>
           <link
@@ -129,8 +129,6 @@ const DetailProduct = (props) => {
             backgroundColor: "#f8f9ed",
             width: "100%",
             height: "auto",
-            margin: "1rem",
-            padding: "1rem",
           }}
         >
           <Grid container>
@@ -704,7 +702,6 @@ const DetailProduct = (props) => {
           </div>
         </Container>
       </div>
-      <Footer />
     </>
   );
 };

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useContext } from "react";
 import { DataContext } from "../../store/GlobalState";
 import { addToCart } from "../../store/Actions";
-import { IconButton, Button, Grid } from "@material-ui/core";
+import { Typography, IconButton, Button, Grid } from "@material-ui/core";
 
 const ProductItem = ({ product, handleCheck }) => {
   const { state, dispatch } = useContext(DataContext);
@@ -12,22 +12,15 @@ const ProductItem = ({ product, handleCheck }) => {
     return (
       <>
         <Grid container>
-          <Grid item xs={12} md={6}>
-            <Link href={`product/${product.url}`}>
-              <Button fullWidth={true} variant="contained" color="primary">
-                Разгледай
-              </Button>
-            </Link>
-          </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={12}>
             <Button
               fullWidth={true}
               color="secondary"
-              variant="contained"
+              variant="outlined"
               disabled={product.inStock === 0 ? true : false}
               onClick={() => dispatch(addToCart(product, cart))}
             >
-              Купи
+              Добави в количката
             </Button>
           </Grid>
         </Grid>
@@ -38,7 +31,7 @@ const ProductItem = ({ product, handleCheck }) => {
   const adminLink = () => {
     return (
       <>
-        <Link href={`create/${product._id}`}>
+        <Link href={`create/${product.url}`}>
           <a className="btn btn-info" style={{ marginRight: "5px", flex: 1 }}>
             Edit
           </a>
@@ -87,7 +80,7 @@ const ProductItem = ({ product, handleCheck }) => {
         />
       </Link>
       <div className="card-body">
-        <Link href={`product/${product._id}`}>
+        <Link href={`product/${product.url}`}>
           <h5 className="card-title text-capitalize" title={product.title}>
             {product.title}
           </h5>
@@ -95,11 +88,11 @@ const ProductItem = ({ product, handleCheck }) => {
 
         <div className="row justify-content-between mx-0">
           <h6 className="text-danger">{product.price} лв</h6>
-          {product.inStock > 0 ? (
+          {/* {product.inStock > 0 ? (
             <h6 className="text-danger">Наличност: {product.inStock}</h6>
           ) : (
             <h6 className="text-danger">Out Stock</h6>
-          )}
+          )} */}
         </div>
 
         <p className="card-text" title={product.description}>

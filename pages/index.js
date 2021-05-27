@@ -64,9 +64,7 @@ const Home = (props) => {
   return (
     <div>
       <Head>
-        <title>
-          Кремове и продукти свързани с вашето здраве | BioZdrave.bg
-        </title>
+        <title>Кремове и продукти свързани с вашето здраве | Vitalize.bg</title>
       </Head>
       <Filter state={state} />
 
@@ -109,8 +107,6 @@ const Home = (props) => {
           ))
         )}
       </div>
-      <Footer />
-
       {props.result < page * 6 ? (
         ""
       ) : (
