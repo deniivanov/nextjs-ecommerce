@@ -16,7 +16,7 @@ const CartItem = ({ item, dispatch, cart }) => {
 
       <td style={{ minWidth: "200px" }} className="w-50 align-middle">
         <h5 className="text-capitalize text-secondary">
-          <Link href={`/product/${item._id}`}>
+          <Link href={`/product/${item.url}`}>
             <a>{item.title}</a>
           </Link>
         </h5>

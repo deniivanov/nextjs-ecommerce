@@ -72,19 +72,26 @@ const ProductItem = ({ product, handleCheck }) => {
           onChange={() => handleCheck(product._id)}
         />
       )}
-      <Link component="button" href={`product/${product._id}`}>
+      <a
+        component="button"
+        style={{ cursor: "pointer" }}
+        href={`product/${product.url}`}
+      >
         <img
           className="card-img-top"
           src={product.images[0].url}
           alt={product.images[0].url}
         />
-      </Link>
+      </a>
       <div className="card-body">
-        <Link href={`product/${product.url}`}>
-          <h5 className="card-title text-capitalize" title={product.title}>
+        <a
+          style={{ cursor: "pointer", textDecoration: "none" }}
+          href={`product/${product.url}`}
+        >
+          <Typography variant="h6" title={product.title}>
             {product.title}
-          </h5>
-        </Link>
+          </Typography>
+        </a>
 
         <div className="row justify-content-between mx-0">
           <h6 className="text-danger">{product.price} лв</h6>
