@@ -2,7 +2,7 @@ import Head from "next/head";
 import { useState, useContext, useEffect } from "react";
 import { DataContext } from "../store/GlobalState";
 import Link from "next/link";
-import { Table, TableHead, TableRow, TableCell } from "@material-ui/core";
+import { Table, TableHead, TableRow, TableCell, Container, TableBody} from "@material-ui/core";
 import valid from "../utils/valid";
 import { patchData } from "../utils/fetchData";
 
@@ -40,7 +40,7 @@ const Profile = () => {
       updatePassword();
     }
 
-    if (name !== auth.user.name || avatar) updateInfor();
+    if (name !== auth.user.name || avatar) updateInfo();
   };
 
   const updatePassword = () => {
@@ -77,7 +77,7 @@ const Profile = () => {
     setData({ ...data, avatar: file });
   };
 
-  const updateInfor = async () => {
+  const updateInfo = async () => {
     let media;
     dispatch({ type: "NOTIFY", payload: { loading: true } });
 
@@ -109,13 +109,13 @@ const Profile = () => {
   return (
     <div className="profile_page">
       <Head>
-        <title>Profile</title>
+        <title>Профил</title>
       </Head>
-
+<Container>
       <section className="row text-secondary my-3">
         <div className="col-md-4">
           <h3 className="text-center text-uppercase">
-            {auth.user.role === "user" ? "User Profile" : "Admin Profile"}
+            {auth.user.role === "user" ? "Потребителски профил" : "Admin Profile"}
           </h3>
 
           <div className="avatar">
@@ -137,7 +137,7 @@ const Profile = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="name">Name</label>
+            <label htmlFor="name">Име</label>
             <input
               type="text"
               name="name"
@@ -160,25 +160,25 @@ const Profile = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="password">New Password</label>
+            <label htmlFor="password">Нова парола</label>
             <input
               type="password"
               name="password"
               value={password}
               className="form-control"
-              placeholder="Your new password"
+              placeholder="Вашата нова парола"
               onChange={handleChange}
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="cf_password">Confirm New Password</label>
+            <label htmlFor="cf_password">Потвърди нова парола</label>
             <input
               type="password"
               name="cf_password"
               value={cf_password}
               className="form-control"
-              placeholder="Confirm new password"
+              placeholder="Потвърди нова парола"
               onChange={handleChange}
             />
           </div>
@@ -188,67 +188,38 @@ const Profile = () => {
             disabled={notify.loading}
             onClick={handleUpdateProfile}
           >
-            Update
+            Запази
           </button>
         </div>
 
         <div className="col-md-8">
-          <h3 className="text-uppercase">Orders</h3>
+          <h3 className="text-uppercase">Поръчки</h3>
           <Table>
-            <TableHead>
+            <TableHead style={{backgroundColor: '#adbc22', color:'#FFF'}}>
               <TableRow>
-                <TableCell>Bla</TableCell>
+                <TableCell>Номер на поръчка</TableCell>
+                <TableCell>Дата</TableCell>
+                <TableCell>Сума</TableCell>
+                <TableCell>Статус</TableCell>
+                <TableCell>Статус на плащане</TableCell>
               </TableRow>
             </TableHead>
-          </Table>
-          <div className="my-3 table-responsive">
-            <table
-              className="table-bordered table-hover w-100 text-uppercase"
-              style={{ minWidth: "600px", cursor: "pointer" }}
-            >
-              <thead className="bg-light font-weight-bold">
-                <tr>
-                  <td className="p-2">id</td>
-                  <td className="p-2">date</td>
-                  <td className="p-2">total</td>
-                  <td className="p-2">delivered</td>
-                  <td className="p-2">paid</td>
-                </tr>
-              </thead>
+            <TableBody>
+              {orders.map((order) => (
 
-              <tbody>
-                {orders.map((order) => (
-                  <tr key={order._id}>
-                    <td className="p-2">
-                      <Link href={`/order/${order._id}`}>
-                        <a>{order._id}</a>
-                      </Link>
-                    </td>
-                    <td className="p-2">
-                      {new Date(order.createdAt).toLocaleDateString()}
-                    </td>
-                    <td className="p-2">${order.total}</td>
-                    <td className="p-2">
-                      {order.delivered ? (
-                        <i className="fas fa-check text-success"></i>
-                      ) : (
-                        <i className="fas fa-times text-danger"></i>
-                      )}
-                    </td>
-                    <td className="p-2">
-                      {order.paid ? (
-                        <i className="fas fa-check text-success"></i>
-                      ) : (
-                        <i className="fas fa-times text-danger"></i>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+              <TableRow key={order._id}>
+                <TableCell>{order._id}</TableCell>
+                <TableCell>{new Date(order.createdAt).toLocaleDateString()}</TableCell>
+                <TableCell></TableCell>
+                <TableCell></TableCell>
+                <TableCell>{order.total}</TableCell>
+              </TableRow>))
+              }
+            </TableBody>
+          </Table>
         </div>
       </section>
+</Container>
     </div>
   );
 };

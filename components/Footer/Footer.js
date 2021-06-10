@@ -96,17 +96,17 @@ export default function Footer() {
           >
             Важни страници
           </Typography>
-          <Link style={{ color: "#fff" }} href="/за-нас">
+          <Link style={{ color: "#fff" }} href="/za-nas">
             За нас
           </Link>
-          <Link style={{ color: "#fff" }} href="/доставка">
+          <Link style={{ color: "#fff" }} href="/dostavka">
             Доставка
           </Link>
-          <Link style={{ color: "#fff" }} href="/поверителност">
-            Политика за поверителност
+          <Link style={{ color: "#fff" }} href="/nachini-na-plashtane">
+            Начини на плащане
           </Link>
-          <Link style={{ color: "#fff" }} href="/условия">
-            Условия за ползване
+          <Link style={{ color: "#fff" }} href="/poveritelnost">
+            Политика за лични данни
           </Link>
           <Link style={{ color: "#fff" }} href="/page">
             Връщане на стоки

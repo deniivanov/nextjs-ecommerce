@@ -70,12 +70,12 @@ function NavBar() {
 
         <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
           <Link href="/profile">
-            <a className="dropdown-item">Profile</a>
+            <a className="dropdown-item">Профил</a>
           </Link>
           {auth.user.role === "admin" && adminRouter()}
           <div className="dropdown-divider"></div>
           <button className="dropdown-item" onClick={handleLogout}>
-            Logout
+            Излез
           </button>
         </div>
       </li>
