@@ -18,7 +18,7 @@ const getOffices = async (req, res) => {
         const offices = response.data.offices;
         return offices;
       });
-    await res.json(JSON.stringify(newData)).res.end();
+    await res.status(200), await res.json(JSON.stringify(newData)), res.end();
   } catch (err) {
     return res.status(500).json({ err: err.message });
   }

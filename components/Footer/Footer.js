@@ -11,6 +11,7 @@ import { Alert } from "@material-ui/lab";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+import MessengerChat from "../Messenger";
 
 const NewsletterSchema = Yup.object().shape({
   email: Yup.string().email("Невалиден e-mail формат"),
@@ -80,6 +81,8 @@ export function Newsletter() {
 
 export default function Footer() {
   return (
+      <>
+      <MessengerChat/>
     <div
       style={{ backgroundColor: "#0d7b73", color: "#fff", minHeight: "12rem" }}
     >
@@ -153,5 +156,6 @@ export default function Footer() {
         </Typography>
       </div>
     </div>
+      </>
   );
 }

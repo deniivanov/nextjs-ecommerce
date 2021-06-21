@@ -1,28 +1,30 @@
-import mongoose from 'mongoose'
+import mongoose from "mongoose";
 
-const orderSchema = new mongoose.Schema({
+const orderSchema = new mongoose.Schema(
+  {
     user: {
-        type: mongoose.Types.ObjectId,
-        ref: 'user'
+      type: mongoose.Types.ObjectId,
+      ref: "user",
     },
-    address: String,
+    address: Object,
     mobile: String,
     cart: Array,
     total: Number,
-    paymentId: String,
-    method: String,
+    payment: String,
     delivered: {
-        type: Boolean,
-        default: false
+      type: Boolean,
+      default: false,
     },
     paid: {
-        type: Boolean,
-        default: false
+      type: Boolean,
+      default: false,
     },
-    dateOfPayment: Date
-}, {
-    timestamps: true
-})
+    dateOfPayment: Date,
+  },
+  {
+    timestamps: true,
+  }
+);
 
-let Dataset = mongoose.models.order || mongoose.model('order', orderSchema)
-export default Dataset
+let Dataset = mongoose.models.order || mongoose.model("order", orderSchema);
+export default Dataset;

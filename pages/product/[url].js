@@ -5,13 +5,13 @@ import { getData } from "../../utils/fetchData";
 import { DataContext } from "../../store/GlobalState";
 import { addToCart } from "../../store/Actions";
 import { Rating } from "@material-ui/lab";
-import { Formik } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { ExpandMore } from "@material-ui/icons";
+import axios from "axios";
 import {
   Avatar,
   Button,
-  IconButton,
   Typography,
   Grid,
   Container,
@@ -23,19 +23,15 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogContentText,
-  DialogActions,
   TextField,
-  CardHeader,
   Card,
   CardContent,
 } from "@material-ui/core";
-import Footer from "../../components/Footer/Footer";
 
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
-const SignupSchema = Yup.object().shape({
+const QuickOrderSchema = Yup.object().shape({
   name: Yup.string()
     .min(2, "Името е твърде кратко")
     .max(50, "Името е твърде дълго!")
@@ -45,24 +41,32 @@ const SignupSchema = Yup.object().shape({
     .min(8, "Невалиден формат, твърде малко цифри!")
     .max(13, "Невалиден формат, твърде много цифри")
     .required("Required"),
-  email: Yup.string().email("Invalid email").required("Required"),
 });
 
-export const ValidationSchemaExample = () => (
+export const QuickOrder = (product) => (
   <div>
     <Formik
       initialValues={{
         name: "",
         tel: "",
+        product,
       }}
-      validationSchema={SignupSchema}
-      onSubmit={(values) => {
-        // same shape as initial values
-        console.log(values);
+      validationSchema={QuickOrderSchema}
+      onSubmit={async (values) => {
+        const res = await axios({
+          method: "post",
+          url: "/api/mail/",
+          data: {
+            name: values.name,
+            tel: values.tel,
+            product,
+            token: process.env.MAIL_VERIFY,
+          },
+        });
       }}
     >
       {({ errors, touched, handleBlur, handleChange, values }) => (
-        <form style={{ display: "flex", flexDirection: "column" }}>
+        <Form style={{ display: "flex", flexDirection: "column" }}>
           <TextField
             name="name"
             label="Имена"
@@ -81,7 +85,7 @@ export const ValidationSchemaExample = () => (
             helperText={errors.tel && touched.tel ? errors.tel : null}
           />
           <Button
-            onClick={() => setDialog(false)}
+            type="submit"
             style={{
               marginTop: "20px",
               backgroundColor: "#adbc22",
@@ -92,7 +96,7 @@ export const ValidationSchemaExample = () => (
           >
             Поръчвам 🚚
           </Button>
-        </form>
+        </Form>
       )}
     </Formik>
   </div>
@@ -110,7 +114,6 @@ const DetailProduct = (props) => {
     if (tab === index) return " active";
     return "";
   };
-
   return (
     <>
       <div>
@@ -186,7 +189,7 @@ const DetailProduct = (props) => {
                 Моля въведете своите данни в полетата долу, за да можем да
                 обработим вашата поръчка възможно най-скоро
               </Typography>
-              <ValidationSchemaExample />
+              <QuickOrder product={product.title} />
             </DialogContent>
           </Dialog>
           {/* Dialog Ends Here */}
@@ -352,15 +355,7 @@ const DetailProduct = (props) => {
                     fontSize: "16px",
                   }}
                 >
-                  Хепатофелин е натурален продукт подкрепящ функциите на черния
-                  дроб, който съдържа оптимална доза екстракт от бял трън
-                  (силимарин), артишок, глухарче, соево и ленено масло. В черния
-                  дроб се обработват и разграждат веществата, които приемаме.
-                  Злоупотребата с алкохол, тютюнопушенето, лекарствата, както и
-                  някои вируси и паразити, могат да предизвикат увреждания на
-                  черния дроб. Билковата терапия често е решение на голяма част
-                  от наблюдаваните проблеми, също е препоръчителна за
-                  профилактика.
+                  {product.whenToUse}
                 </Typography>
               </Grid>
               <Grid item xs={12} md={6}>
@@ -400,15 +395,7 @@ const DetailProduct = (props) => {
                     fontSize: "16px",
                   }}
                 >
-                  Хепатофелин е натурален продукт подкрепящ функциите на черния
-                  дроб, който съдържа оптимална доза екстракт от бял трън
-                  (силимарин), артишок, глухарче, соево и ленено масло. В черния
-                  дроб се обработват и разграждат веществата, които приемаме.
-                  Злоупотребата с алкохол, тютюнопушенето, лекарствата, както и
-                  някои вируси и паразити, могат да предизвикат увреждания на
-                  черния дроб. Билковата терапия често е решение на голяма част
-                  от наблюдаваните проблеми, също е препоръчителна за
-                  профилактика.
+                  {product.howToUse}
                 </Typography>
               </Grid>
             </Grid>
@@ -430,15 +417,7 @@ const DetailProduct = (props) => {
                     fontSize: "16px",
                   }}
                 >
-                  Хепатофелин е натурален продукт подкрепящ функциите на черния
-                  дроб, който съдържа оптимална доза екстракт от бял трън
-                  (силимарин), артишок, глухарче, соево и ленено масло. В черния
-                  дроб се обработват и разграждат веществата, които приемаме.
-                  Злоупотребата с алкохол, тютюнопушенето, лекарствата, както и
-                  някои вируси и паразити, могат да предизвикат увреждания на
-                  черния дроб. Билковата терапия често е решение на голяма част
-                  от наблюдаваните проблеми, също е препоръчителна за
-                  профилактика.
+                  {product.whenToUse}
                 </Typography>
               </Grid>
               <Grid item xs={12} md={6}>
@@ -491,7 +470,7 @@ const DetailProduct = (props) => {
               </Grid>
             </Grid>
           </Container>
-          <div align="center">
+          <div align="center" id="reviews">
             <Button
               style={{
                 marginTop: "20px",
@@ -525,11 +504,7 @@ const DetailProduct = (props) => {
                   </div>
                   <CardContent>
                     <Typography variant="subtitle">
-                      Маста от мармот се използва в медицината и козметиката за
-                      лечение на ревматоидни проблеми и кожни раздразнения.
-                      Особено подходящ за масаж на раменете, облекчава артритни
-                      и мускулни болки, навяхвания, при подагра, ревматизъм и
-                      артрит, болки в гръбнака или възпаление на ставите.
+                      {product.howItWorks}
                     </Typography>
                   </CardContent>
                   <div align="center">
@@ -602,7 +577,7 @@ const DetailProduct = (props) => {
                   fontWeight: "100",
                 }}
               >
-                Често задавани въпроси
+                Съдържание
               </AccordionSummary>
               <AccordionDetails>
                 <Typography
@@ -612,27 +587,28 @@ const DetailProduct = (props) => {
                 </Typography>
               </AccordionDetails>
             </Accordion>
-            <Accordion variant="h5">
-              <AccordionSummary
-                expandIcon={<ExpandMore />}
-                style={{
-                  backgroundColor: "#daf2eb",
-                  color: "#0d7b73",
-                  fontFamily: "Open Sans",
-                  fontWeight: "100",
-                }}
-              >
-                Съдържание на продукта
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography
-                  style={{ fontFamily: "Open Sans", fontWeight: "100" }}
-                  variant="body1"
-                >
-                  {product.howToUse}
-                </Typography>
-              </AccordionDetails>
-            </Accordion>
+            {/*<Accordion variant="h5">*/}
+            {/*TO DO Добави FAQ*/}
+            {/*<AccordionSummary*/}
+            {/*  expandIcon={<ExpandMore />}*/}
+            {/*  style={{*/}
+            {/*    backgroundColor: "#daf2eb",*/}
+            {/*    color: "#0d7b73",*/}
+            {/*    fontFamily: "Open Sans",*/}
+            {/*    fontWeight: "100",*/}
+            {/*  }}*/}
+            {/*>*/}
+            {/*  Съдържание на продукта*/}
+            {/*</AccordionSummary>*/}
+            {/*  <AccordionDetails>*/}
+            {/*    <Typography*/}
+            {/*      style={{ fontFamily: "Open Sans", fontWeight: "100" }}*/}
+            {/*      variant="body1"*/}
+            {/*    >*/}
+            {/*      {product.howToUse}*/}
+            {/*    </Typography>*/}
+            {/*  </AccordionDetails>*/}
+            {/*</Accordion>*/}
             <Accordion variant="h5">
               <AccordionSummary
                 expandIcon={<ExpandMore />}
@@ -650,7 +626,7 @@ const DetailProduct = (props) => {
                   style={{ fontFamily: "Open Sans", fontWeight: "100" }}
                   variant="body1"
                 >
-                  {product.whenToUse}
+                  {product.characteristics}
                 </Typography>
               </AccordionDetails>
             </Accordion>
@@ -671,7 +647,8 @@ const DetailProduct = (props) => {
                   style={{ fontFamily: "Open Sans", fontWeight: "100" }}
                   variant="body1"
                 >
-                  {product.howItWorks}
+                  <Typography style={{ color: "red" }}>Внимание!</Typography>
+                  {product.warning}
                 </Typography>
               </AccordionDetails>
             </Accordion>
@@ -683,7 +660,7 @@ const DetailProduct = (props) => {
             variant="h5"
             style={{ marginBottom: "1rem", marginTop: "1rem" }}
           >
-            Готов съм да поръчам
+            ⬇️ Готов съм да поръчам ⬇️
           </Typography>
           <div align="center">
             <Button

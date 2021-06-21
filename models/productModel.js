@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import faq from "../models/faqModel";
 
 const productSchema = new mongoose.Schema(
   {
@@ -25,6 +26,14 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    warning: {
+      type: String,
+      required: false,
+    },
+    characteristics: {
+      type: String,
+      required: false,
+    },
     whenToUse: {
       type: String,
       required: true,
@@ -35,10 +44,10 @@ const productSchema = new mongoose.Schema(
     howToUse: {
       type: String,
     },
-    reviews: {
-      type: mongoose.Types.ObjectId,
-      ref: "reviews",
-    },
+    reviews: [
+      { type: mongoose.Types.ObjectId, ref: "reviews", required: false },
+    ],
+    faq: [{ type: mongoose.Types.ObjectId, ref: "faq", required: false }],
     images: {
       type: Array,
       required: false,

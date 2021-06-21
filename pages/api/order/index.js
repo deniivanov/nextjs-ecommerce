@@ -22,7 +22,7 @@ const getOrders = async (req, res) => {
 
     let orders;
     if (result.role !== "admin") {
-      orders = await Orders.find({ user: result.id }).populate(
+      orders = await Orders.find({ email: result.email }).populate(
         "user",
         "-password"
       );
@@ -38,27 +38,25 @@ const getOrders = async (req, res) => {
 
 const createOrder = async (req, res) => {
   try {
-    console.log(req.body.cart);
-    /* const result = await auth(req, res)
-        const { address, mobile, cart, total } = req.body
+    const { address, mobile, cart, user, name, total } = req.body;
+    cart.filter((item) => {
+      return sold(item._id, item.quantity, item.inStock, item.sold);
+    });
 
-        const newOrder = new Orders({
-            user: result.id, address, mobile, cart, total
-        })
-
-        cart.filter(item => {
-            return sold(item._id, item.quantity, item.inStock, item.sold)
-        })
-
-        await newOrder.save()
-
-        res.json({
-            msg: 'Order success! We will contact you to confirm the order.',
-            newOrder
-        }) */
-    res.json("Success");
+    const Order = await Orders.create({
+      email: user,
+      address: address,
+      mobile: mobile,
+      name: name,
+      cart: cart,
+      total: total,
+    });
+    res.status(200);
+    res.json(`${Order._id}`);
+    res.end();
   } catch (err) {
     return res.status(500).json({ err: err.message });
+    res.end();
   }
 };
 

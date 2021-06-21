@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { decrease, increase } from "../store/Actions";
+import { Typography, IconButton } from "@material-ui/core";
+import { Delete } from "@material-ui/icons";
 
 const CartItem = ({ item, dispatch, cart }) => {
   const itemTotal = item.quantity * item.price;
   return (
-    <tr>
+    <tr style={{ padding: "1rem" }}>
       <td style={{ width: "100px", overflow: "hidden" }}>
         <img
           src={item.images[0].url}
@@ -15,18 +17,14 @@ const CartItem = ({ item, dispatch, cart }) => {
       </td>
 
       <td style={{ minWidth: "200px" }} className="w-50 align-middle">
-        <h5 className="text-capitalize text-secondary">
+        <Typography variant="h6">
           <Link href={`/product/${item.url}`}>
-            <a>{item.title}</a>
+            <a style={{ textDecoration: "none" }}>{item.title}</a>
           </Link>
-        </h5>
-
-        <h6 className="text-danger">{itemTotal.toFixed(2)} лева</h6>
-        {item.inStock > 0 ? (
-          <p className="mb-1 text-danger">Налични: {item.inStock}</p>
-        ) : (
-          <p className="mb-1 text-danger">Няма наличности</p>
-        )}
+        </Typography>
+        <Typography variant="body1" style={{ color: "#7b0d3d" }}>
+          {itemTotal.toFixed(2)} лева
+        </Typography>
       </td>
 
       <td className="align-middle" style={{ minWidth: "150px" }}>
@@ -55,10 +53,8 @@ const CartItem = ({ item, dispatch, cart }) => {
         className="align-middle"
         style={{ minWidth: "50px", cursor: "pointer" }}
       >
-        <i
-          className="far fa-trash-alt text-danger"
-          aria-hidden="true"
-          style={{ fontSize: "18px" }}
+        <IconButton
+          size="large"
           data-toggle="modal"
           data-target="#exampleModal"
           onClick={() =>
@@ -74,7 +70,9 @@ const CartItem = ({ item, dispatch, cart }) => {
               ],
             })
           }
-        ></i>
+        >
+          <Delete color={"secondary"} />
+        </IconButton>
       </td>
     </tr>
   );

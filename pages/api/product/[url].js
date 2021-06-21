@@ -23,9 +23,10 @@ const getProduct = async (req, res) => {
     console.log(req.query);
     const { url } = req.query;
 
-    const product = await Products.findOne({ url: url }).exec();
+    const product = await Products.findOne({ url: url }).lean().exec();
     if (!product)
       return res.status(400).json({ err: "This product does not exist." });
+    console.log(product);
 
     res.json({ product });
   } catch (err) {

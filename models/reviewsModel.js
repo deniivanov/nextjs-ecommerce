@@ -11,11 +11,16 @@ const ReviewSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    img: {
+      type: String,
+      required: false,
+    },
   },
   {
     timestamps: true,
   }
 );
 
-let Dataset = mongoose.models.review || mongoose.model("review", ReviewSchema);
+let Dataset =
+  mongoose.models.reviews || mongoose.model("reviews", ReviewSchema);
 export default Dataset;
