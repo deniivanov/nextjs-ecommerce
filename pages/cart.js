@@ -478,38 +478,22 @@ const Cart = () => {
                   variant="contained"
                   color="secondary"
                   fullWidth={true}
-                  onClick={
-                    async () => (
-                      await axios.post("/api/order", {
-                        user: auth.user.email,
-                        name: name,
-                        mobile: mobile,
-                        payment: payment,
-                        cart: cart,
-                        address: address,
-                        total: total,
-                      }),
-                      await setOrderComplete(true),
-                      await localStorage.removeItem("vitalizeCart"),
-                      await setTimeout(function () {
-                        setOrderComplete(false),
-                          window.location.replace("http://localhost:3000/");
-                      }, 5000)
-                    )
-                    //   await axios.post(
-                    //   "/api/order",
-                    //   {
-                    //     body: {
-                    //       cart,
-                    //       mobile,
-                    //       address,
-                    //       name,
-                    //       user: auth?.user?._id,
-                    //     },
-                    //   },
-                    //   options
-                    // )
-                  }
+                  onClick={async () => (
+                    await setOrderComplete(true),
+                    await axios.post("/api/order", {
+                      user: auth?.user?.email,
+                      name: name,
+                      mobile: mobile,
+                      payment: payment,
+                      cart: cart,
+                      address: address,
+                      total: total,
+                    }),
+                    await localStorage.removeItem("vitalizeCart"),
+                    await setTimeout(function () {
+                      setOrderComplete(false), window.location.replace("/");
+                    }, 6000)
+                  )}
                 >
                   Изпрати поръчката
                 </Button>
