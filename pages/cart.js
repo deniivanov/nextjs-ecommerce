@@ -10,7 +10,7 @@ import {
   AccountBalance,
 } from "@material-ui/icons";
 import {
-  Paper,
+  Divider,
   Button,
   Container,
   Grid,
@@ -83,6 +83,7 @@ const Cart = () => {
   const { cart, auth, orders } = state;
   const [loading, setLoading] = useState(false);
   const [problem, setProblem] = useState(false);
+  const [deliveryPrice, setDeliveryPrice] = useState(6);
   const [total, setTotal] = useState(0);
 
   const [name, setName] = useState("");
@@ -103,7 +104,7 @@ const Cart = () => {
     }
     const officesResponse = await response.data;
     setOffices(officesResponse);
-
+    setDeliveryPrice(5);
     setLoading(false);
   };
   const changePayment = async (event) => {
@@ -464,11 +465,45 @@ const Cart = () => {
                       <TableHead>
                         <TableRow>
                           <TableCell>Продукти</TableCell>
+                          <TableCell>Броя</TableCell>
+                          <TableCell>Общо</TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
+                        {cart.map((item) => (
+                          <TableRow key={item._id}>
+                            <TableCell>{item.title}</TableCell>
+                            <TableCell item>{item.quantity} бр.</TableCell>
+                            <TableCell item>
+                              {item.price.toFixed(2) * item.quantity} лв.
+                            </TableCell>
+                            <Divider />
+                          </TableRow>
+                        ))}
+                        {total.toFixed(2) <= 50 ? (
+                          <TableRow>
+                            <TableCell>Доставка</TableCell>
+                            <TableCell>{deliverToOffice}</TableCell>
+
+                            <TableCell>{deliveryPrice} лв.</TableCell>
+                          </TableRow>
+                        ) : (
+                          <TableRow>
+                            <TableCell>Доставка</TableCell>
+                            <TableCell></TableCell>
+                            <TableCell>Безплатна доставка</TableCell>
+                          </TableRow>
+                        )}
                         <TableRow>
+                          <TableCell>Общо</TableCell>
                           <TableCell></TableCell>
+                          {total.toFixed(2) <= 50 ? (
+                            <TableCell>
+                              {(total + deliveryPrice).toFixed(2)} лв.
+                            </TableCell>
+                          ) : (
+                            <TableCell>{total.toFixed(2)} лв.</TableCell>
+                          )}
                         </TableRow>
                       </TableBody>
                     </Table>
